@@ -1,3 +1,11 @@
+# 2024
+
+## January
+
+- don't use tesseract
+- rename inplace instead of copy
+- 
+
 # 2023
 
 ## December
@@ -10,3 +18,5 @@
 # 2018
 
 use Python 2.7
+
+# Originally by San Vu Ngoc, 2018
