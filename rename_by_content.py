@@ -432,7 +432,8 @@ def find_better_filename(filepath):
 
     exif_info = ""
     for tagLists in [
-        ["Author", "Artist", "AlbumArtist", "Model", "Make", "Creator"],
+        ["Author", "Artist", "AlbumArtist", "Creator"],
+        ["Model", "Make"],
         ["Album", "AlbumTitle", "Title"]
     ]:
         for tag in tagLists:
