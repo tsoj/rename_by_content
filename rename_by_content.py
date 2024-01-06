@@ -485,10 +485,24 @@ def find_better_filepath(filepath):
 
 if __name__ == "__main__":
     rootdir = Path(sys.argv[1])
+    rename_for_real = False if len(sys.argv) <= 2 or sys.argv[2] != "--rename_for_real" else True
+
+    if rename_for_real:
+        print("Renaming file for real!")
+    else:
+        print("Just a dry run, not actually renaming anything")
+
     # Return a list of regular files only, not directories
     file_list = [f for f in rootdir.glob("**/*") if f.is_file()]
-    for file in file_list:
+    for i, file in enumerate(file_list):
         print(Path(file).name)
         new_path = find_better_filepath(file)
         print("   ->", Path(new_path).name)
+
+        assert Path(file).parent == Path(new_path).parent
+
+        if rename_for_real:
+            os.rename(file, new_path)
+
+        print(f"Finished file {i+1} of {len(file_list)}")
         # os.system(f"exiftool {file}")
