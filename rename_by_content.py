@@ -318,16 +318,20 @@ def title_from_txt(textfile):
     # we search for a line with a 4-digit number that could be a year
     # because years often appear in a title.
     with open(textfile, "rt", encoding="utf-8") as f:
-        for line in f:
-            line = to_utf8(line.strip())
-            years = re.search(r"\b(19|20)\d{2}\b", line)  # year 19xx or 20xx
-            if years is not None:
-                print_debug(line)  # TODO test if year is within reasonable range
-                y = int(years.group(0))
-                if y >= MIN_YEAR:  # we don't impose y <= MAKE_DATE.year because
-                    # even a future date can be common in a
-                    # title.
-                    return line
+        try:
+            for line in f:
+                line = to_utf8(line.strip())
+                years = re.search(r"\b(19|20)\d{2}\b", line)  # year 19xx or 20xx
+                if years is not None:
+                    print_debug(line)  # TODO test if year is within reasonable range
+                    y = int(years.group(0))
+                    if y >= MIN_YEAR:  # we don't impose y <= MAKE_DATE.year because
+                        # even a future date can be common in a
+                        # title.
+                        return line        
+        except UnicodeDecodeError:
+            print_error("Error in encoding")
+            return None
     return None
 
 
@@ -489,8 +493,8 @@ if __name__ == "__main__":
     rename_for_real = False if len(sys.argv) <= 2 or sys.argv[2] != "--rename_for_real" else True
 
     if rename_for_real:
-        print("Renaming file for real!")
-        answer = input("Are you sure to continue? [yes|NO] ")
+        print("Renaming files for real!")
+        answer = input("Are you sure to continue? This can not be undone. [yes|NO] ")
         if answer != "yes":
             print("Aborting. No files have been renamed.")
             exit(0)
@@ -500,6 +504,7 @@ if __name__ == "__main__":
     # Return a list of regular files only, not directories
     file_list = [f for f in rootdir.glob("**/*") if f.is_file()]
     for i, file in enumerate(file_list):
+        
         print(Path(file).name)
         new_path = find_better_filepath(file)
         print("   ->", Path(new_path).name)
