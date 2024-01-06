@@ -489,6 +489,10 @@ if __name__ == "__main__":
 
     if rename_for_real:
         print("Renaming file for real!")
+        answer = input("Are you sure to continue? [yes|NO] ")
+        if answer != "yes":
+            print("Aborting. No files have been renamed.")
+            exit(0)
     else:
         print("Just a dry run, not actually renaming anything")
 
