@@ -504,6 +504,7 @@ if __name__ == "__main__":
         print("   ->", Path(new_path).name)
 
         assert Path(file).parent == Path(new_path).parent
+        assert not os.path.exists(new_path)
 
         if rename_for_real:
             os.rename(file, new_path)
